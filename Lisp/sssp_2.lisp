@@ -119,3 +119,56 @@
 	       ((equal (second key) graph-id)
 		(format t "chiave: ~S, valore: ~S~%" key value))))
 	   *edges*))
+
+(defun sssp-dist (graph-id vertex-id)
+  (gethash (list graph-id vertex-id) *distances*))
+
+(defun sssp-visited (graph-id vertex-id)
+  (setf
+   (gethash (list graph-id vertex-id) *visited*)
+   T))
+
+(defun sssp-previous (graph-id vertex-id)
+  (gethash (list graph-id vertex-id) *previous*))
+
+(defun sssp-change-dist (graph-id vertex-id new-dist)
+  (setf
+   (gethash (list graph-id vertex-id) *distances*)
+   new-dist)
+  new-dist)
+
+(defun sssp-change-previous (graph-id vertex-id new-previous)
+  (setf
+   (gethash (list graph-id vertex-id) *previous*)
+   new-previous)
+  new-previous)
+
+(defun sssp-dijkstra (graph-id source))
+
+;sssp-shortest-path-aux is sssp-shortest-path-helper
+(defun sssp-shortest-path (graph-id source vertex-id)
+  (sssp-shortest-path-helper graph-id source vertex-id ()))
+
+(defun sssp-shortest-path-helper (graph-id source vertex-id elementi)
+  (let ((previous (sssp-previous graph-id vertex-id)))
+    (cond ((equal vertex-id source) elementi)
+	  (T (push
+	      (first (all-edges graph-id previous vertex-id))
+	      elementi)
+	     (sssp-shortes-path-helper
+	      graph-id
+	      source
+	      previous
+	      elementi)))))
+
+;graph-arcs-sssp is all-edges
+(defun all-edges (graph-id vertex-id1 vertex-id2)
+  (let ((chiave '()) (valore '()))
+    (maphash (lambda (key value)
+	       (cond ((and (equal (second key) graph-id)
+			   (equal (third key) vertex-id1)
+			   (equal (fourth key) vertex-id2))
+		      (push key chiave)
+		      (push value valore))))
+	     *edges*)
+    chiave))
