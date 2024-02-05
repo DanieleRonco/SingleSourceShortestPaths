@@ -119,3 +119,4 @@
 	       ((equal (second key) graph-id)
 		(format t "chiave: ~S, valore: ~S~%" key value))))
 	   *edges*))
+
