@@ -4,17 +4,17 @@
 
 ;;;; sssp.lisp
 
-(defparameter *vertices* (make-hash-table :test #'equal))
-(defparameter *arcs* (make-hash-table :test #'equal))
-(defparameter *graphs* (make-hash-table :test #'equal))
-
-(defparameter *visited* (make-hash-table :test #'equal))
-(defparameter *dist* (make-hash-table :test #'equal))
-(defparameter *previous* (make-hash-table :test #'equal))
-
-(defparameter *heaps* (make-hash-table :test #'equal))
-
-
+\(defparameter *vertices* (make-hash-table :test #'equal))
+\(defparameter *arcs* (make-hash-table :test #'equal))
+\(defparameter *graphs* (make-hash-table :test #'equal))
+\
+\(defparameter *visited* (make-hash-table :test #'equal))
+\(defparameter *dist* (make-hash-table :test #'equal))
+\(defparameter *previous* (make-hash-table :test #'equal))
+\
+\(defparameter *heaps* (make-hash-table :test #'equal))
+\
+\
 (defun is-graph (graph-id)
   (gethash graph-id *graphs*))
 
@@ -66,11 +66,15 @@
   (let ((chiave ()) (valore ()))
     (maphash (lambda (key value)
 	       (cond
-		((and
-		 (equal (second key) graph-id)
-		 (equal (third key) vertex-id))
-		 (push key chiave)
-		 (push value valore))))		 
+			( (and
+				(equal (second key) graph-id)
+				(equal (third key) vertex-id)
+			   )
+			(push key chiave)
+			(push value valore)
+			)
+			)
+			)			
 	     *arcs*)
     chiave))
 

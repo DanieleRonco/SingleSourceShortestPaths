@@ -170,9 +170,40 @@
 	 (update-helper graph-id vertice array lunghezza)
 	 (update graph-id vertice array (- lunghezza 1)))))
 
-(defun update-helper (graph-id vertice array punto))
+(defun update-helper (graph-id vertice-id array punto)
+  (let ((vertice (fourth (nth point array)))
+	(dimensione (fifth (nth point array))))
+    (let ((dist-old (sssp-dist graph-id vertice))
+	  (dist-new
+	   (+
+	    (sssp-dist graph-id vertice-id)
+	    dimensione)))
+      (cond ((equal dist-old NIL)
+	     (progn
+	       (sssp-change-dist graph-id vertice dist-new)
+	       (sssp-change-previous graph-id vertice vertice-id)
+	       (heap-insert graph-id dist-new vertice)))
+	    ((< dist-new dist-old)
+	     (progn
+	       (sssp-change-dist graph-id vertice dist-new)
+	       (sssp-change-previous graph-id vertice vertice-id)
+	       (heap-modify-dist graph-id dist-new dist-old)))))))
 
-(defun heap-modify-distance (heap-id new-key old-key))
+(defun heap-modify-distance (heap-id key-new key-old)
+  (let ((list (the-heap heap-id))
+	(element (find
+		  (the-heap heap-id)
+		  (- (heap-size heap-id) 1)
+		  key-old)))
+    (cond ((equal element NIL) NIL)
+	  (T
+	   (let ((value (second (aref list element))))
+	     (setf
+	      (aref list element)
+	      (list key-new value))
+	     (heap-shift list
+			 (- (heap-size heap-id) 1)
+			 element))))))
 
 ;find-element is find
 (defun find (array size chiave)
@@ -209,3 +240,7 @@
 		      (push value valore))))
 	     *edges*)
     chiave))
+
+
+					;ATTENZIONE!
+;heap-actual-heap is the-heap
