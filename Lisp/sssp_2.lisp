@@ -22,7 +22,7 @@
 
 (defun delete-graph (graph-id)
   (remhash graph-id *graphs*)
-  nil)
+  NIL)
 
 (defun new-vertex (graph-id vertex-id)
   (setf (gethash (list 'vertex graph-id vertex-id)
@@ -143,7 +143,44 @@
    new-previous)
   new-previous)
 
-(defun sssp-dijkstra (graph-id source))
+(defun sssp-dijkstra (graph-id source)
+  (progn (sssp-change-dist graph-id source 0)
+	 (new-heap
+	  graph-id
+	  (length (graph-vertices graph-id)))
+	 (let
+	     ((array (graph-vertex-neighbors graph-id source)))
+	   (let ((lunghezza (length array)))
+	     (update graph-id source array (- lunghezza 1))))
+	 (sssp-visited graph-id source)
+	 (sssp-dijkstra-helper graph-id)
+	 NIL))
+
+(defun sssp-dijkstra-helper (graph-id)
+  (cond ((heap-not-empty graph-id)
+	 (let ((vertice (second (heap-extract graph-id))))
+	   (let ((array (graph-vertex-neighbors graph-id vertice)))
+	     (let ((lunghezza (length array)))
+	       (update graph-id vertice array (- lunghezza 1))))
+	   (sssp-visited graph-id vertice)
+	   (sssp-dijkstra-helper graph-id)))))
+
+(defun update (graph-id vertice array lunghezza)
+  (cond ((=> lunghezza 0)
+	 (update-helper graph-id vertice array lunghezza)
+	 (update graph-id vertice array (- lunghezza 1)))))
+
+(defun update-helper (graph-id vertice array punto))
+
+(defun heap-modify-distance (heap-id new-key old-key))
+
+;find-element is find
+(defun find (array size chiave)
+  (cond ((< size 0) NIL)
+	(T
+	 (let ((key (first (aref array size))))
+	   (cond ((= key chiave) size)
+		 (T (find array (- size 1) chiave)))))))
 
 ;sssp-shortest-path-aux is sssp-shortest-path-helper
 (defun sssp-shortest-path (graph-id source vertex-id)
