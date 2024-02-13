@@ -381,7 +381,7 @@
    ((= initial size) T)
    (T
     (switch-to-nill heap-id (+ initial 1) initial)
-    (switch-other-ex heap-id (+ initial 1) size))))
+    (switch-ot-ex heap-id (+ initial 1) size))))
 
 ;Modifica di un elemento
 (defun heap-modify-key (heap-id new-key old-key value)
