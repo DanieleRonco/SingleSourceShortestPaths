@@ -271,7 +271,7 @@
 (defun heap-capacity (heap-id)
   (let ((temp 
          (gethash heap-id *heaps*)))
-    (length(fouth temp)))) ;capacità massima
+    (length(fouth temp)))) ;capacitÃ  massima
 
 (defun heap-delete (heap-id)
   (remhash heap-id *heaps*))
@@ -281,7 +281,7 @@
          (gethash heap-id *heaps*)))
     (cond
      ((= (third temp) 0)
-      t)))) ;potrei richiamare heap-size e verificare che sia = 0, oppure così
+      t)))) ;potrei richiamare heap-size e verificare che sia = 0, oppure cosÃ¬
 
 (defun heap-not-empty (heap-id)
   (let ((temp
@@ -290,7 +290,7 @@
            T)))) ;stesso ragionamento dell'ultima funzione
 
 (defun heap-head (heap-id)
-  (aref (the-heap heap-id) 0)) ;il primo elemento è la coppia chiave-valore
+  (aref (the-heap heap-id) 0)) ;il primo elemento Ã¨ la coppia chiave-valore
 
 (defun heap-print (heap-id)
   (print (gethash heap-id *heaps*)) T)
@@ -364,7 +364,7 @@
     (cond 
      ((= size 0) T)
      ((=size 1) (switch-to-nill heap-id 1 0))
-     ((> size 1) (switch-other-ex heap-id 0 size)))))
+     ((> size 1) (switch-ot-ex heap-id 0 size)))))
 
 (defun switch-to-nill (heap-id p1 p2) ;swap-to-nill
   (let ((list 
@@ -376,7 +376,7 @@
      (aref list p1)
      (nil))))
 
-(defun switch-other-ex (heap-id initial size) ;switch-other-ex
+(defun switch-ot-ex (heap-id initial size) ;switch-other-ex
   (cond
    ((= initial size) T)
    (T
