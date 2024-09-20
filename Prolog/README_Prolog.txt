@@ -1,90 +1,111 @@
 Componenti del gruppo:
 
-Colombo Filippo 829745
-Magni Lorenzo 816114
-Manganaro Francesco 845087
+899826 Roncoroni Daniele
+869525 Marco Tantardini
 
-===
+Algoritmo Dijkstra in Prolog
 
-Implementazione dell'algoritmo di Dijkstra in Prolog
+%%% Interfaccia Prolog per la Manipolazione dei Dati
 
-===
+Ogni grafo è definito da fatti:
+	graph(G).
+	Il grafo G
 
-**** INTERFACCIA PROLOG PER LA MANIPOLAZIONE DEI DATI ****
+	vertex(G, V).
+	Il vertice V del grafo G
 
-Ogni grafico è definito da una serie di fatti salvati nel dataset:
+	edge(G, V, U, Weight)
+	Arco tra i vertici V e U, con peso non negativo.
 
-graph(G) -> Il grafico denominato G
+new_graph(G).
+Crea un nuovo grafo G nel database Prolog.
 
-vertex(G, V) -> Il vertice V del grafo G
+delete_graph(G).
+Rimuove un grafo G dal database Prolog (con relativi vertici ed archi).
 
-arc(G, V, U, Weight) -> Arco tra i vertici V e U, con peso non negativo
+new_vertex(G, V).
+Crea un nuovo vertice V nel grafo G.
 
-I predicati implementati dall'API sono i seguenti:
+vertices(G, Vs).
+Vero se Vs contiene tutti i vertici di G.
 
-new_graph(G)  ->  Istanziare il grafico G nel database prolog.
+list_vertices(G).
+Stampa la lista dei vertici del grafo G.
 
-delete(G)  ->  Rimuovere il grafo G e tutti i suoi vertici e archi.
+new_edge(G, V, U, Weight).
+Crea un nuovo arco nel grafo G tra i vertici V e U, con peso non negativo.
 
-add_vertex(G, V)  ->  Aggiungi il vertice V del grafo G al database.
+edges(G, Es).
+Vero quando Es è una lista di tutti gli archi in G.
 
-vertices(G, Vs) - >  Questo predicato è vero quanto Vs è una lista contenente tutti i vertici di G .
+neighbors(G, V, Ns).
+Vero quando V è un vertice di G e Ns è una lista di archi che portano ai vertici N adiacenti a V.
 
-list_vertices(G) ->  Questo predicato stampa alla console dell’interprete Prolog una lista dei vertici del grafo G 
+list_edges(G).
+Stampa la lista degli archi del grafo G.
 
-new_arc(G, V, U, Weight) -> Aggiunge un arco del grafo G alla base dati Prolog, con peso non negativo.
+list_graph(G).
+Stampa la lista dei vertici e degli archi del grafo G.
 
-arcs(G, Es) -> Questo predicato è vero quando Es è una lista di tutti gli archi presenti in G.
+%%% Minheap 
 
-neighbors(G, V, Ns) ->  Questo predicato è vero quando V è un vertice di G e Ns è una lista contenente gli archi, arc(G, V, N, W), che portano ai vertici N immediatamente raggiungibili da V .
+new_heap(H).
+Questo predicato inserisce un nuovo heap nella base-dati Prolog.
 
-list_arcs(G) ->  Questo predicato stampa alla console dell’interprete Prolog una lista degli archi del grafo G.
+delete_heap(H).
+Rimuove tutto lo heap dalla base-dati Prolog.
 
-list_grap(G)  ->  Questo predicato stampa alla console dell’interprete Prolog una lista dei vertici e degli archi del grafo G.
+heap_size(H, S).
+Questo predicato è vero quanto S è la dimensione corrente dello heap.
 
-===
+empty(H).
+Questo predicato è vero quando lo heap H non contiene elementi.
 
-**** MINHEAP IN PROLOG ****
+not_empty(H).
+Questo predicato è vero quando lo heap H contiene almeno un elemento.
 
-I predicati implementati dall'API sono i seguenti:
+head(H, K, V).
+Il predicato head/3 è vero quando l'elemento dello heap H con chiave minima K è V.
 
-new_heap(H)  ->  Questo predicato inserisce un nuovo heap nella base-dati Prolog.
+insert(H, K, V).
+Il predicato insert/3 è vero quando l'elemento V è inserito nello heap H con chiave K.
 
-delete_heap(H)  ->  Rimuove tutto lo heap (incluse tutte le “entries”) dalla base-dati Prolog.
+extract(H, K, V).
+Il predicato extract/3 è vero quando la coppia K, V con K minima, è rimossa dallo heap H.
 
-heap_size(H, S) ->  Questo predicato è vero quanto S è la dimensione corrente dello heap. Una semplice implementazione potrebbe essere:
+modify_key(H, NewKey, OldKey, V).
+Il predicato modify_key/4 è vero quando la chiave OldKey (associata al valore V) è sostituita
+da NewKey.
 
-empty(H) -> Questo predicato è vero quando lo heap H non contiene elementi.
+list_heap(H).
+Il predicato richiama listing/1 per stampare sulla console Prolog lo stato interno dello heap.
 
-not_empty(H) ->  Questo predicato è vero quando lo heap H contiene almeno un elemento.
+%%% SSSP in Prolog
 
-head(H, K, V) ->  Il predicato head/3 è vero quando l’elemento dello heap H con chiave minima K è V.
+visited(G, V).
+Vero quando V è un vertice di G e V risulta "visitato".
 
-insert(H, K, V) -> Il predicato insert/3 è vero quando l’elemento V è inserito nello heap H con chiave K.
+distance(G, V, D).
+Vero quando V è un vertice di G e la distanza minima del vertice V dalla sorgente è D.
 
-extract(H, K, V) ->  Il predicato extract/3 è vero quando la coppia K, V con K minima, è rimossa dallo heap H.
+previous(G, V, U).
+Vero quando V ed U sono vertici di G e U è il vertice precedente a V nel cammino minimo dalla sorgente a V.
 
-modify_key(H, NewKey, oldKey, V) ->  Il predicato modify_key/4 è vero quando la chiave OldKey (associata al valore V) è sostituita da NewKey. 
+change_distance(G, V, NewDist).
+Ha sempre successo, con effetti collaterali. Ritira dalla base di dati tutte le istanze di distance(G, V, _) e asserisce distance(G, V, NewDist).
 
-list_heap(H) ->  Questo predicato stampa alla console dell’interprete Prolog lo stato interno dello heap.
+change_previous(G, V, U).
+Ha sempre successo, con effetti collaterali. Ritira dalla base di dati tutte le istanze di previous(G, V, _) e asserisce previous(G, V, U).
 
-===
+dijkstra_sssp(G, Source).
+Ha sempre successo con un effetto collaterale. Al termine, la base di dati contiene predicati distance(G, V, D) per ogni V di G ed i predicati previous(G, V, U) e visited(V)
+per ogni V, ottenuti durante le iterazioni dell'algoritmo di Dijkstra.
 
-**** SSSP IN PROLOG ****
+dijkstra_sssp_helper(G, V, H).
+Aiuta nell'implementazione dell'algoritmo di Dijkstra, gestendo i casi in cui l'heap H è vuoto, il nodo di partenza ha distanza 1 o il nodo di partenza ha distanza diversa da 1.
 
-visited(G, V) ->  Questo predicato è vero quando V è un vertice di G e, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, V risulta “visitato”.
+dijkstra_sssp_helper_neighbor(G, V, H, Ns).
+Aiuta nell'implementazione dell'algoritmo di Dijkstra, gestendo la vuotezza o non vuotezza dell'heap H, la presenza di vicini del nodo corrente e l'aggiornamtno dei valori della distanza.
 
-dist(G, V, D) ->  Questo predicato è vero quando V è un vertice di G e, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, la distanza minima del vertice V dalla “sorgente” è D.
-
-previous(G, V, U) ->  Questo predicato è vero quando V ed U sono vertici di G e, durante e dopo l’esecuzione dell’algoritmo di Dijkstra, il vertice U è il vertice “precedente” a V nel cammino minimo dalla “sorgente” a V.
-
-I predicati implementati dall'API sono i seguenti:
-
-change_dist(G, V, NewDist) ->  Questo predicato ha sempre successo con due effetti collaterali: prima tutte le istanze di dist(G, V, _) sono ritirate dalla base-dati Prolog, e quindi dist(G, V, NewDist) è asserita.
-
-change_previous(G, V, U) ->  Questo predicato ha successo con due effetti collaterali: prima tutte le istanze di previous(G, V, _) sono ritirate dalla base-dati Prolog, e quindi previous(G, V, U) è asserita.
-
-
-sssp(G, Source) ->  Questo predicato ha successo con un effetto collaterale. Dopo la sua prova, la base-dati Prolog ha al suo interno i predicati dist(G, V, D) per ogni V appartenente a G; la base-dati Prolog contiene anche i predicati previous(G, V, U) e visited(V) per ogni V, ottenuti durante le iterazioni dell’algoritmo di Dijkstra. 
-
-shortest_path(G, Source, V, Path) ->  Questo predicato è vero quando Path è una lista di archi.
+shortest_path(G, Source, V, Path).
+Vero quando Path è una lista di archi.
